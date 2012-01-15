@@ -9,7 +9,14 @@ SpriteLoader =
 
   completeHandlers: []
 
+  statusHandlers: []
+
+  numToLoad: 0
+
+  loaded: 0
+
   add: (id, url) ->
+    numToLoad++
     @remove(id) if @stack[id]
     @loadStack.push(new Td.Gfx.Sprite(id, url))
 
@@ -18,24 +25,42 @@ SpriteLoader =
   get: (id) ->
     @stack[id]
 
-  load: (onComplete) ->
-    @completeHandlers.push(onComplete) if onComplete?
+  getProgress: ->
+    loaded / parseFloat(numToLoad)
 
-    unless @loading
-      @loading = true
-      @loadNext()
+  load: (onComplete, onStatusUpdate) ->
+    @completeHandlers.push(onComplete) if onComplete?
+    @statusHandlers.push(onStatusUpdate) if onStatusUpdate?
+
+    @loadNext() unless @loading
 
   handleLoadComplete: (event) =>
+    @placeLoadedIntoStack()
+    @popLoadStack()
+    @callStatusUpdateHandlers()
+    @loadNext()
 
   loadNext: ->
+    @loading = true
+
     if @isLoadStackEmpty()
       @roundUpLoading()
     else
       @loadNextInStack()
 
   roundUpLoading: ->
+    @callStatusUpdateHandlers()
+
+    @statusHandlers = []
+    @loading        = false
+    @loaded         = 0
+    @numToLoad      = 0
+
     @callCompleteHandlers()
-    @loading = false
+
+  callStatusUpdateHandlers: ->
+    for handler in @statusHandlers
+      handler()
 
   callCompleteHandlers: ->
     for handler in @completeHandlers
@@ -43,17 +68,23 @@ SpriteLoader =
 
     @completeHandlers = []
 
+  updateProgress: ->
+    @loaded++
+
+  placeLoadedIntoStack: ->
+    @toLoad.loaded = true
+    @stack[@toLoad.id] = @toLoad
+
+  popLoadStack: ->
+    @toLoad = null
+    @loadStack.splice(0, 1)
+
   isLoadStackEmpty: ->
     @loadStack.length == 0
 
   loadNextInStack: ->
     @toLoad = @loadStack[0]
-    @loadSprite()
-
-  loadSprite: ->
-    @stack[@toLoad.id] = new Image()
-    @stack[@toLoad.id].onload = @handleLoadComplete
-    @stack[@toLoad.id].src = @toLoad.url
+    @toLoad.load()
 
 @Td ||= {}
 @Td.Services ||= {}
