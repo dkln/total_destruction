@@ -1,4 +1,4 @@
-class World
+class Base
   constructor: ->
     @width  = 0
     @height = 0
@@ -8,10 +8,10 @@ class World
     @tiles[y] ||= []
     @tiles[y][x] = tileId
 
-    @width = x if x > @width
+    @width  = x if x > @width
     @height = y if y > @height
 
 
 @Td ||= {}
-@Td.Gfx ||= {}
-@Td.Gfx.World = World
+@Td.World ||= {}
+@Td.World.Base = Base

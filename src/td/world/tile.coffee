@@ -7,5 +7,5 @@ class Tile
 
 
 @Td ||= {}
-@Td.Gfx ||= {}
-@Td.Gfx.Tile = Tile
+@Td.World ||= {}
+@Td.World.Tile = Tile

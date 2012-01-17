@@ -4,7 +4,7 @@ Tween =
   initTime: new Date().getTime()
 
   to: (object, duration, toParams, options) ->
-    tween = new TweenCommand(object, toParams)
+    tween          = new TweenCommand(object, toParams)
     tween.duration = duration
 
     if options
@@ -46,7 +46,7 @@ Tween =
   cleanup: ->
     for i in [i..(@tweens.length - 1)]
       unless @tweens[i]
-        @tweens.splice i, 1
+        @tweens.splice(i, 1)
         i = -1
 
 @Td ||= {}

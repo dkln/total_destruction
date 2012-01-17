@@ -15,6 +15,7 @@ Boot =
 
   handleComplete: ->
     $('#progressbar').hide()
+    Td.Game.Core.init()
     Td.Game.Intro.boot()
 
 @Td ||= {}

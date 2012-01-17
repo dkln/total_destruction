@@ -1,4 +1,4 @@
-class Sprite
+class Sprite extends Td.Gfx.Layers.Object
   constructor: (@id, @url) ->
     @loaded = false
     @image  = null
@@ -13,4 +13,5 @@ class Sprite
 
 @Td ||= {}
 @Td.Gfx ||= {}
-@Td.Gfx.Sprite = Sprite
+@Td.Gfx.Layers ||= {}
+@Td.Gfx.Layers.Sprite = Sprite

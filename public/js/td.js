@@ -1,56 +1,8 @@
 (function() {
-  var Boot, Colors, Core, Default, IdGenerator, Intro, Isometric, IsometricTile, Main, Mixins, Player, Progressbar, Sprite, SpriteLoader, Tile, Tween, TweenCommand, Viewport, World, _base, _base10, _base11, _base12, _base13, _base14, _base15, _base16, _base17, _base18, _base19, _base2, _base3, _base4, _base5, _base6, _base7, _base8, _base9;
-  var _this = this;
+  var Base, Boot, Clear, Colors, Container, ContainerBase, Core, Default, DisplayObjects, IdGenerator, Intro, Isometric, IsometricTile, Main, Math, Mixins, Object, Player, Progressbar, Sprite, SpriteLoader, Tile, Translate, Tween, TweenCommand, Viewport, _base, _base10, _base11, _base12, _base13, _base14, _base15, _base16, _base17, _base18, _base19, _base2, _base20, _base21, _base22, _base23, _base24, _base25, _base26, _base27, _base28, _base29, _base3, _base30, _base31, _base32, _base33, _base34, _base4, _base5, _base6, _base7, _base8, _base9;
+  var _this = this, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   this.Td || (this.Td = {});
-
-  TweenCommand = (function() {
-
-    function TweenCommand(object, toParams) {
-      var property;
-      this.object = object;
-      this.toParams = toParams;
-      this.startTime = new Date().getTime();
-      this.duration = 0;
-      this.delay = 0;
-      this.ease = Td.Animation.Easing.Default;
-      this.finished = false;
-      this.onComplete = null;
-      this.startValues = {};
-      for (property in this.toParams) {
-        if (this.object.hasOwnProperty(property)) {
-          this.startValues[property] = this.object[property];
-          this.toParams[property] = this.toParams[property] - this.object[property];
-        }
-      }
-    }
-
-    TweenCommand.prototype.update = function(updateTime) {
-      var factor, property, time, _results;
-      time = updateTime - this.startTime;
-      if (time >= this.duration) {
-        factor = 1;
-        this.finished = true;
-      } else {
-        this.finished = false;
-        factor = this.ease(time, 0, 1, this.duration);
-      }
-      _results = [];
-      for (property in this.toParams) {
-        _results.push(this.object[property] = this.startValues[property] + (factor * this.toParams[property]));
-      }
-      return _results;
-    };
-
-    return TweenCommand;
-
-  })();
-
-  this.Td || (this.Td = {});
-
-  (_base = this.Td).Animation || (_base.Animation = {});
-
-  this.Td.Animation.TweenCommand = TweenCommand;
 
   Tween = {
     tweens: [],
@@ -122,9 +74,114 @@
 
   this.Td || (this.Td = {});
 
-  (_base2 = this.Td).Animation || (_base2.Animation = {});
+  (_base = this.Td).Animation || (_base.Animation = {});
 
   this.Td.Animation.Tween = Tween;
+
+  TweenCommand = (function() {
+
+    function TweenCommand(object, toParams) {
+      var property;
+      this.object = object;
+      this.toParams = toParams;
+      this.startTime = new Date().getTime();
+      this.duration = 0;
+      this.delay = 0;
+      this.ease = Td.Animation.Easing.Default;
+      this.finished = false;
+      this.onComplete = null;
+      this.startValues = {};
+      for (property in this.toParams) {
+        if (this.object.hasOwnProperty(property)) {
+          this.startValues[property] = this.object[property];
+          this.toParams[property] = this.toParams[property] - this.object[property];
+        }
+      }
+    }
+
+    TweenCommand.prototype.update = function(updateTime) {
+      var factor, property, time, _results;
+      time = updateTime - this.startTime;
+      if (time >= this.duration) {
+        factor = 1;
+        this.finished = true;
+      } else {
+        this.finished = false;
+        factor = this.ease(time, 0, 1, this.duration);
+      }
+      _results = [];
+      for (property in this.toParams) {
+        _results.push(this.object[property] = this.startValues[property] + (factor * this.toParams[property]));
+      }
+      return _results;
+    };
+
+    return TweenCommand;
+
+  })();
+
+  this.Td || (this.Td = {});
+
+  (_base2 = this.Td).Animation || (_base2.Animation = {});
+
+  this.Td.Animation.TweenCommand = TweenCommand;
+
+  Boot = {
+    assets: {
+      logo: 'logo.png'
+    },
+    boot: function() {
+      Td.Services.SpriteLoader.basePath = 'public/img/';
+      Td.Services.SpriteLoader.addStack(this.assets);
+      Td.Services.SpriteLoader.load(this.handleComplete, this.handleStatusUpdate);
+      return $('#progressbar').show();
+    },
+    handleStatusUpdate: function() {
+      return $('#progressbar .progress').width(Td.Services.SpriteLoader.getProgress() * 100);
+    },
+    handleComplete: function() {
+      $('#progressbar').hide();
+      Td.Game.Core.init();
+      return Td.Game.Intro.boot();
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base3 = this.Td).Game || (_base3.Game = {});
+
+  this.Td.Game.Boot = Boot;
+
+  $(function() {
+    return Td.Game.Boot.boot();
+  });
+
+  Core = {
+    ctx: null,
+    tickTimer: null,
+    fps: 24,
+    init: function() {
+      this.initCanvas();
+      return this.initTicker();
+    },
+    initCanvas: function() {
+      return this.ctx = document.getElementById('canvas').getContext();
+    },
+    initTicker: function() {
+      return this.tickTimer = setInterval(this.handleTick, 1000 / this.fps, this);
+    },
+    handleTick: function() {
+      Td.Animation.Tween.update();
+      Td.Gfx.Renderers.Clear.render(_this.ctx);
+      return Td.Gfx.Renderers.DisplayObjects.render(_this.ctx);
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base4 = this.Td).Game || (_base4.Game = {});
+
+  this.Td.Game.Core = Core;
 
   Intro = {
     boot: function() {}
@@ -132,7 +189,7 @@
 
   this.Td || (this.Td = {});
 
-  (_base3 = this.Td).Game || (_base3.Game = {});
+  (_base5 = this.Td).Game || (_base5.Game = {});
 
   this.Td.Game.Intro = Intro;
 
@@ -142,7 +199,7 @@
 
   this.Td || (this.Td = {});
 
-  (_base4 = this.Td).Game || (_base4.Game = {});
+  (_base6 = this.Td).Game || (_base6.Game = {});
 
   this.Td.Game.Main = Main;
 
@@ -162,7 +219,7 @@
 
   this.Td || (this.Td = {});
 
-  (_base5 = this.Td).Game || (_base5.Game = {});
+  (_base7 = this.Td).Game || (_base7.Game = {});
 
   this.Td.Game.Player = Player;
 
@@ -181,8 +238,8 @@
       return this.image.src = this.url;
     };
 
-    Sprite.prototype.render = function(ctx, x, y) {
-      return ctx.drawImage(this.image, x, y);
+    Sprite.prototype.render = function(ctx) {
+      return ctx.drawImage(this.image, 0, 0);
     };
 
     return Sprite;
@@ -191,85 +248,9 @@
 
   this.Td || (this.Td = {});
 
-  (_base6 = this.Td).Gfx || (_base6.Gfx = {});
-
-  this.Td.Gfx.Sprite = Sprite;
-
-  Tile = (function() {
-
-    function Tile() {
-      this.x = 0;
-      this.y = 0;
-      this.z = 0;
-      this.sprite = null;
-    }
-
-    return Tile;
-
-  })();
-
-  this.Td || (this.Td = {});
-
-  (_base7 = this.Td).Gfx || (_base7.Gfx = {});
-
-  this.Td.Gfx.Tile = Tile;
-
-  Viewport = (function() {
-
-    function Viewport() {
-      this.x = 0;
-      this.y = 0;
-      this.width = 0;
-      this.height = 0;
-    }
-
-    Viewport.prototype.boundX = function(world) {
-      var boundX;
-      boundX = x + this.width;
-      if (boundX > world.width) return boundX = world.width;
-    };
-
-    Viewport.prototype.boundY = function(world) {
-      var boundY;
-      boundY = y + this.height;
-      if (boundX > world.height) return boundY = world.height;
-    };
-
-    return Viewport;
-
-  })();
-
-  this.Td || (this.Td = {});
-
   (_base8 = this.Td).Gfx || (_base8.Gfx = {});
 
-  this.Td.Gfx.Viewport = Viewport;
-
-  World = (function() {
-
-    function World() {
-      this.width = 0;
-      this.height = 0;
-      this.tiles = [];
-    }
-
-    World.prototype.set = function(tileId, x, y) {
-      var _base9;
-      (_base9 = this.tiles)[y] || (_base9[y] = []);
-      this.tiles[y][x] = tileId;
-      if (x > this.width) this.width = x;
-      if (y > this.height) return this.height = y;
-    };
-
-    return World;
-
-  })();
-
-  this.Td || (this.Td = {});
-
-  (_base9 = this.Td).Gfx || (_base9.Gfx = {});
-
-  this.Td.Gfx.World = World;
+  this.Td.Gfx.Sprite = Sprite;
 
   Colors = {
     hex2rgba: function(hex) {
@@ -277,42 +258,40 @@
       num = parseInt(hex.slice(1), 16);
       return [num >> 16 & 255, num >> 8 & 255, num & 255, num >> 24 & 255];
     },
-    angleToRadians: function(angle) {
-      return angle * Math.PI / 180;
-    },
     firstUpcase: function(str) {
       return str.substr(0, 1).toUpperCase() + str.substr(1);
     }
   };
 
-  Boot = {
-    assets: {
-      logo: 'logo.png'
-    },
-    boot: function() {
-      Td.Services.SpriteLoader.basePath = 'public/img/';
-      Td.Services.SpriteLoader.addStack(this.assets);
-      Td.Services.SpriteLoader.load(this.handleComplete, this.handleStatusUpdate);
-      return $('#progressbar').show();
-    },
-    handleStatusUpdate: function() {
-      return $('#progressbar .progress').width(Td.Services.SpriteLoader.getProgress() * 100);
-    },
-    handleComplete: function() {
-      $('#progressbar').hide();
-      return Td.Game.Intro.boot();
+  IdGenerator = {
+    generate: function(length) {
+      var id;
+      if (length == null) length = 8;
+      id = "";
+      while (id.length < length) {
+        id += Math.random().toString(36).substr(2);
+      }
+      return id.substr(0, length);
     }
   };
 
   this.Td || (this.Td = {});
 
-  (_base10 = this.Td).Game || (_base10.Game = {});
+  (_base9 = this.Td).Services || (_base9.Services = {});
 
-  this.Td.Game.Boot = Boot;
+  this.Td.Services.IdGenerator = IdGenerator;
 
-  $(function() {
-    return Td.Game.Boot.boot();
-  });
+  Math = {
+    angleToRadians: function(angle) {
+      return angle * Math.PI / 180;
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base10 = this.Td).Services || (_base10.Services = {});
+
+  this.Td.Services.Math = Math;
 
   Mixins = {
     extend: function(object, mixin) {
@@ -328,14 +307,6 @@
       return extend(object.prototype, mixin);
     }
   };
-
-  Progressbar = (function() {
-
-    function Progressbar() {}
-
-    return Progressbar;
-
-  })();
 
   SpriteLoader = {
     stack: {},
@@ -440,33 +411,89 @@
 
   this.Td.Services.SpriteLoader = SpriteLoader;
 
-  IdGenerator = {
-    generate: function(length) {
-      var id;
-      if (length == null) length = 8;
-      id = "";
-      while (id.length < length) {
-        id += Math.random().toString(36).substr(2);
-      }
-      return id.substr(0, length);
+  Progressbar = (function() {
+
+    function Progressbar() {}
+
+    return Progressbar;
+
+  })();
+
+  Base = (function() {
+
+    function Base() {
+      this.width = 0;
+      this.height = 0;
+      this.tiles = [];
     }
-  };
+
+    Base.prototype.set = function(tileId, x, y) {
+      var _base12;
+      (_base12 = this.tiles)[y] || (_base12[y] = []);
+      this.tiles[y][x] = tileId;
+      if (x > this.width) this.width = x;
+      if (y > this.height) return this.height = y;
+    };
+
+    return Base;
+
+  })();
 
   this.Td || (this.Td = {});
 
-  (_base12 = this.Td).Services || (_base12.Services = {});
+  (_base12 = this.Td).World || (_base12.World = {});
 
-  this.Td.Services.IdGenerator = IdGenerator;
+  this.Td.World.Base = Base;
 
-  Core = {
-    renderer: function() {}
-  };
+  Tile = (function() {
+
+    function Tile() {
+      this.x = 0;
+      this.y = 0;
+      this.z = 0;
+      this.sprite = null;
+    }
+
+    return Tile;
+
+  })();
 
   this.Td || (this.Td = {});
 
-  (_base13 = this.Td).Game || (_base13.Game = {});
+  (_base13 = this.Td).World || (_base13.World = {});
 
-  this.Td.Game.Core = Core;
+  this.Td.World.Tile = Tile;
+
+  Viewport = (function() {
+
+    function Viewport() {
+      this.x = 0;
+      this.y = 0;
+      this.width = 0;
+      this.height = 0;
+    }
+
+    Viewport.prototype.boundX = function(world) {
+      var boundX;
+      boundX = x + this.width;
+      if (boundX > world.width) return boundX = world.width;
+    };
+
+    Viewport.prototype.boundY = function(world) {
+      var boundY;
+      boundY = y + this.height;
+      if (boundX > world.height) return boundY = world.height;
+    };
+
+    return Viewport;
+
+  })();
+
+  this.Td || (this.Td = {});
+
+  (_base14 = this.Td).World || (_base14.World = {});
+
+  this.Td.World.Viewport = Viewport;
 
   Default = function(t, b, c, d) {
     return -c * (t /= d) * (t - 2) + b;
@@ -474,11 +501,301 @@
 
   this.Td || (this.Td = {});
 
-  (_base14 = this.Td).Animation || (_base14.Animation = {});
+  (_base15 = this.Td).Animation || (_base15.Animation = {});
 
-  (_base15 = this.Td.Animation).Easing || (_base15.Easing = {});
+  (_base16 = this.Td.Animation).Easing || (_base16.Easing = {});
 
   this.Td.Animation.Easing.Default = Default;
+
+  Container = (function() {
+
+    function Container() {}
+
+    Container.prototype.render = function(ctx) {
+      return true;
+    };
+
+    return Container;
+
+  })();
+
+  Td.Services.Mixins.include(Container, Td.Gfx.Layers.ContainerBase);
+
+  this.Td || (this.Td = {});
+
+  (_base17 = this.Td).Gfx || (_base17.Gfx = {});
+
+  (_base18 = this.Td.Gfx).Layers || (_base18.Layers = {});
+
+  this.Td.Gfx.Layers.Container = Container;
+
+  ContainerBase = {
+    add: function(child) {
+      Td.Gfx.Renderers.DisplayObjects.childrenChanged = true;
+      if (child.parent) child.parent.remove(child);
+      this.setAncestorsFor(child);
+      child.translatedObjects = [child].concat(child.ancestors).reverse();
+      this.children.push(child);
+      return this;
+    },
+    remove: function(child) {
+      var index;
+      if ((index = this.children.indexOf(child)) > -1) {
+        Td.Gfx.Renderers.DisplayObjects.childrenChanged = true;
+        child.parent = null;
+        child.ancestors = null;
+        child.translatedObjects = null;
+        this.children.splice(index, 1);
+      }
+      return this;
+    },
+    setAncestorsFor: function(child) {
+      var theParent;
+      child.parent = this;
+      child.ancestors = [];
+      theParent = this;
+      while (theParent) {
+        child.ancestors.push(theParent);
+        theParent = theParent.parent;
+      }
+      return true;
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base19 = this.Td).Gfx || (_base19.Gfx = {});
+
+  (_base20 = this.Td.Gfx).Layers || (_base20.Layers = {});
+
+  this.Td.Gfx.Layers.ContainerBase = ContainerBase;
+
+  Object = (function() {
+
+    function Object() {
+      this.id = '';
+      this.x = 0;
+      this.y = 0;
+      this.oldX = null;
+      this.oldY = null;
+      this.calculatedX = 0;
+      this.calculatedY = 0;
+      this.width = 0;
+      this.height = 0;
+      this.alpha = 1;
+      this.oldAlpha = 1;
+      this.calculatedAlpha = 1;
+      this.scaleX = 1;
+      this.scaleY = 1;
+      this.oldScaleX = null;
+      this.oldScaleY = null;
+      this.calculatedScaleX = 1;
+      this.calculatedScaleY = 1;
+      this.rotation = 0;
+      this.oldRotation = null;
+      this.calculatedRotation = 0;
+      this.enabled = true;
+      this.visible = true;
+      this.oldVisible = null;
+      this.calculatedVisibility = true;
+      this.parent = null;
+      this.ancestors = null;
+      this.translatedObjects = null;
+    }
+
+    Object.prototype.positionChanged = function() {
+      return this.x !== this.oldX || this.y !== this.oldY || this.rotation !== this.oldRotation || this.scaleX !== this.oldScaleX || this.scaleY !== this.oldScaleY || this.visible !== this.old || Td.Gfx.Layers.Translate.ancestorsPositionChanged(this);
+    };
+
+    return Object;
+
+  })();
+
+  this.Td || (this.Td = {});
+
+  (_base21 = this.Td).Gfx || (_base21.Gfx = {});
+
+  (_base22 = this.Td.Gfx).Layes || (_base22.Layes = {});
+
+  this.Td.Gfx.Layers.Object = Object;
+
+  Sprite = (function() {
+
+    __extends(Sprite, Td.Gfx.Layers.Object);
+
+    function Sprite(id, url) {
+      this.id = id;
+      this.url = url;
+      this.loaded = false;
+      this.image = null;
+    }
+
+    Sprite.prototype.load = function(onComplete) {
+      this.image = new Image();
+      this.image.onload = onComplete;
+      return this.image.src = this.url;
+    };
+
+    Sprite.prototype.render = function(ctx) {
+      return ctx.drawImage(this.image, 0, 0);
+    };
+
+    return Sprite;
+
+  })();
+
+  this.Td || (this.Td = {});
+
+  (_base23 = this.Td).Gfx || (_base23.Gfx = {});
+
+  (_base24 = this.Td.Gfx).Layers || (_base24.Layers = {});
+
+  this.Td.Gfx.Layers.Sprite = Sprite;
+
+  Translate = {
+    setCanvasPositions: function(layer) {
+      var newVars;
+      if (layer.positionChanged()) {
+        layer.oldX = layer.x;
+        layer.oldY = layer.y;
+        layer.oldVisible = layer.visible;
+        layer.oldAlpha = layer.alpha;
+        newVars = this.getCanvasPositions(layer);
+        layer.calculatedX = newVars[0];
+        layer.calculatedY = newVars[1];
+        layer.calculatedVisibility = newVars[2];
+        return layer.calculatedAlpha = newVars[3];
+      }
+    },
+    getCanvasPositions: function(layer) {
+      var theParent, translatedAlpha, translatedVisibility, translatedX, translatedY;
+      theParent = layer;
+      translatedX = 0;
+      translatedY = 0;
+      translatedVisibility = true;
+      translatedAlpha = 1;
+      while (theParent) {
+        if (!theParent.visible) translatedVisibility = false;
+        translatedX += theParent.x;
+        translatedY += theParent.y;
+        translatedAlpha *= theParent.alpha;
+        theParent = theParent.parent;
+      }
+      return [translatedX, translatedY, translatedVisibility, translatedAlpha];
+    },
+    ancestorsPositionChanged: function(layer) {
+      var ancestor, _i, _len, _ref;
+      _ref = layer.ancestors;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        ancestor = _ref[_i];
+        if (ancestor.positionChanged()) return true;
+      }
+      return false;
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base25 = this.Td).Gfx || (_base25.Gfx = {});
+
+  (_base26 = this.Td.Gfx).Layes || (_base26.Layes = {});
+
+  this.Td.Gfx.Layers.Translate = Translate;
+
+  Clear = {
+    render: function(ctx) {
+      return ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  };
+
+  this.Td || (this.Td = {});
+
+  (_base27 = this.Td).Gfx || (_base27.Gfx = {});
+
+  (_base28 = this.Td.Gfx).Renderers || (_base28.Renderers = {});
+
+  this.Td.Gfx.Renderers.Clear = Clear;
+
+  DisplayObjects = {
+    allChildren: [],
+    children: [],
+    childrenChanged: false,
+    cloneCanvas: function() {
+      var canvas;
+      canvas = document.createElement('canvas');
+      canvas.width = this.canvas.width;
+      canvas.height = this.canvas.height;
+      return canvas;
+    },
+    render: function(ctx) {
+      if (this.childrenChanged) {
+        this.findAllChildren();
+        this.childrenChanged = false;
+      }
+      return this.renderAllChildren(ctx);
+    },
+    setupContext: function(ctx, child) {
+      var object, _i, _len, _ref, _results;
+      ctx.globalAlpha = child.calculatedAlpha;
+      _ref = child.translatedObjects;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        object = _ref[_i];
+        ctx.translate(object.x, object.y);
+        ctx.rotate(Td.Services.Math.angleToRadians(object.rotation));
+        _results.push(ctx.scale(object.scaleX, object.scaleY));
+      }
+      return _results;
+    },
+    renderAllChildren: function(ctx) {
+      var child, _i, _len, _ref, _results;
+      _ref = this.allChildren;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        child = _ref[_i];
+        Td.Gfx.Layers.Translate.setCanvasPositions(child);
+        if (child.calculatedVisibility) {
+          _results.push(this.renderChild(ctx));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    },
+    renderChild: function(ctx) {
+      ctx.save();
+      this.setupContext(ctx, child);
+      child.render(ctx);
+      return ctx.restore();
+    },
+    findAllChildren: function() {
+      this.allChildren = [];
+      return this.getChildren(this, this.allChildren);
+    },
+    getChildren: function(fromParent, collectedChildren) {
+      var child, _i, _len, _ref;
+      _ref = fromParent.children;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        child = _ref[_i];
+        collectedChildren.push(child);
+        if (this.hasChildren(child)) this.getChildren(child, collectedChildren);
+      }
+      return collectedChildren;
+    },
+    hasChildren: function(object) {
+      return (object.children != null) && object.children.length > 0;
+    }
+  };
+
+  Td.Services.Mixins.include(DisplayObjects, Td.Gfx.DisplayContainerBase);
+
+  this.Td || (this.Td = {});
+
+  (_base29 = this.Td).Gfx || (_base29.Gfx = {});
+
+  (_base30 = this.Td.Gfx).Renderers || (_base30.Renderers = {});
+
+  this.Td.Gfx.Renderers.DisplayObjects = DisplayObjects;
 
   Isometric = {
     render: function(ctx, world, viewport) {
@@ -502,9 +819,9 @@
 
   this.Td || (this.Td = {});
 
-  (_base16 = this.Td).Gfx || (_base16.Gfx = {});
+  (_base31 = this.Td).Gfx || (_base31.Gfx = {});
 
-  (_base17 = this.Td.Gfx).Renderers || (_base17.Renderers = {});
+  (_base32 = this.Td.Gfx).Renderers || (_base32.Renderers = {});
 
   this.Td.Gfx.Renderers.Isometric = Isometric;
 
@@ -553,9 +870,9 @@
 
   this.Td || (this.Td = {});
 
-  (_base18 = this.Td).Gfx || (_base18.Gfx = {});
+  (_base33 = this.Td).Gfx || (_base33.Gfx = {});
 
-  (_base19 = this.Td.Gfx).Renderers || (_base19.Renderers = {});
+  (_base34 = this.Td.Gfx).Renderers || (_base34.Renderers = {});
 
   this.Td.Gfx.Renderers.IsometricTile = IsometricTile;
 
