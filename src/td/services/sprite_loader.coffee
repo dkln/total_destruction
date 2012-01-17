@@ -15,10 +15,16 @@ SpriteLoader =
 
   loaded: 0
 
+  basePath: ''
+
+  addStack: (stack) ->
+    for id, url of stack
+      @add(id, url)
+
   add: (id, url) ->
-    numToLoad++
+    @numToLoad++
     @remove(id) if @stack[id]
-    @loadStack.push(new Td.Gfx.Sprite(id, url))
+    @loadStack.push(new Td.Gfx.Sprite(id, "#{@basePath}#{url}"))
 
   remove: (id) ->
 
@@ -26,7 +32,7 @@ SpriteLoader =
     @stack[id]
 
   getProgress: ->
-    loaded / parseFloat(numToLoad)
+    @loaded / parseFloat(@numToLoad)
 
   load: (onComplete, onStatusUpdate) ->
     @completeHandlers.push(onComplete) if onComplete?
