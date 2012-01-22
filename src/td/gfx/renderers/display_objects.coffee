@@ -51,7 +51,9 @@ DisplayObjects =
   hasChildren: (object) ->
     object.children? && object.children.length > 0
 
-Td.Services.Mixins.include(DisplayObjects, Td.Gfx.DisplayContainerBase)
+  positionChanged: -> false
+
+Td.Services.Mixins.extend(DisplayObjects, Td.Gfx.Layers.ContainerBase)
 
 @Td ||= {}
 @Td.Gfx ||= {}

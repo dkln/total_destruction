@@ -69,10 +69,13 @@
     },
     hasChildren: function(object) {
       return (object.children != null) && object.children.length > 0;
+    },
+    positionChanged: function() {
+      return false;
     }
   };
 
-  Td.Services.Mixins.include(DisplayObjects, Td.Gfx.DisplayContainerBase);
+  Td.Services.Mixins.extend(DisplayObjects, Td.Gfx.Layers.ContainerBase);
 
   this.Td || (this.Td = {});
 

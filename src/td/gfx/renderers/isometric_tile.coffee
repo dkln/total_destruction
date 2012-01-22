@@ -7,10 +7,10 @@ IsometricTile =
     x = @getScreenX(world, viewport, worldX, worldY, world[worldY][worldX])
     y = @getScreenY(world, viewport, worldX, worldY, world[worldY][worldX])
 
-    @renderOnScreen(x, y, world[worldY][worldX])
+    @renderOnScreen(x, y, world[worldY][worldX]) if world[worldY][worldX]
 
-  renderOnScreen: (ctx, screenX, screenY, tile) ->
-    tile.render(ctx, screenX, screenY)
+  renderOnScreen: (ctx, screenX, screenY, sprite) ->
+    sprite.render(ctx, screenX, screenY)
 
   getScreenX: (world, viewport, worldX, worldY, tile) ->
     x = @getScreenOffsetX(worldY, viewport) + @getWorldOffsetX(worldX, viewport) * @width

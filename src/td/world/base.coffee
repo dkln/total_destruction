@@ -4,9 +4,9 @@ class Base
     @height = 0
     @tiles  = []
 
-  set: (tileId, x, y) ->
+  set: (sprite, x, y) ->
     @tiles[y] ||= []
-    @tiles[y][x] = tileId
+    @tiles[y][x] = sprite
 
     @width  = x if x > @width
     @height = y if y > @height

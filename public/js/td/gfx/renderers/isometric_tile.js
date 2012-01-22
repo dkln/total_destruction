@@ -8,10 +8,12 @@
       var x, y;
       x = this.getScreenX(world, viewport, worldX, worldY, world[worldY][worldX]);
       y = this.getScreenY(world, viewport, worldX, worldY, world[worldY][worldX]);
-      return this.renderOnScreen(x, y, world[worldY][worldX]);
+      if (world[worldY][worldX]) {
+        return this.renderOnScreen(x, y, world[worldY][worldX]);
+      }
     },
-    renderOnScreen: function(ctx, screenX, screenY, tile) {
-      return tile.render(ctx, screenX, screenY);
+    renderOnScreen: function(ctx, screenX, screenY, sprite) {
+      return sprite.render(ctx, screenX, screenY);
     },
     getScreenX: function(world, viewport, worldX, worldY, tile) {
       var x;

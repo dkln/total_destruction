@@ -9,10 +9,10 @@
       this.tiles = [];
     }
 
-    Base.prototype.set = function(tileId, x, y) {
+    Base.prototype.set = function(sprite, x, y) {
       var _base;
       (_base = this.tiles)[y] || (_base[y] = []);
-      this.tiles[y][x] = tileId;
+      this.tiles[y][x] = sprite;
       if (x > this.width) this.width = x;
       if (y > this.height) return this.height = y;
     };
