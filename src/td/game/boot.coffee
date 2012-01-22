@@ -1,17 +1,33 @@
 Boot =
-  assets: {
-    logo: 'logo.png'
+  canvasWidth: 640,
+
+  canvasHeight: 480,
+
+  tiles: {
+    pavement:   'img/tiles/pavement.png',
+    grass:      'img/tiles/grass.png',
+    speedway:   'img/tiles/speedway.png',
   }
 
-  boot: ->
-    Td.Services.SpriteLoader.basePath = 'public/img/'
-    Td.Services.SpriteLoader.addStack(@assets)
-    Td.Services.SpriteLoader.load(@handleComplete, @handleStatusUpdate)
+  maps: {
+    world:      'maps/test.map'
+  }
 
+  configLoader: ->
+    Td.Services.Loader.basePath = 'public/'
+
+  boot: ->
+    @configLoader()
+    @loadAssets()
+
+  loadAssets: ->
+    Td.Services.Loader.addStack(@tiles, 'sprite')
+    Td.Services.Loader.addStack(@maps, 'world')
+    Td.Services.Loader.load(@handleComplete, @handleStatusUpdate)
     $('#progressbar').show()
 
   handleStatusUpdate: ->
-    $('#progressbar .progress').width(Td.Services.SpriteLoader.getProgress() * 100)
+    $('#progressbar .progress').width(Td.Services.Loader.getProgress() * 100)
 
   handleComplete: ->
     $('#progressbar').hide()

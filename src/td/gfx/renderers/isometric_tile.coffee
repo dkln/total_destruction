@@ -1,5 +1,5 @@
 IsometricTile =
-  width: 25
+  width: 50
 
   height: 25
 

@@ -38,5 +38,5 @@ Translate =
 
 @Td ||= {}
 @Td.Gfx ||= {}
-@Td.Gfx.Layes ||= {}
+@Td.Gfx.Layers ||= {}
 @Td.Gfx.Layers.Translate = Translate

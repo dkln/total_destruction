@@ -1,15 +1,8 @@
 class Sprite
-  constructor: (@id, @url) ->
-    @loaded = false
-    @image  = null
+  constructor: (@image) ->
 
-  load: (onComplete) ->
-    @image        = new Image()
-    @image.onload = onComplete
-    @image.src    = @url
-
-  render: (ctx) ->
-    ctx.drawImage(@image, 0, 0)
+  render: (ctx, x, y) ->
+    ctx.drawImage(@image, x, y)
 
 @Td ||= {}
 @Td.Gfx ||= {}

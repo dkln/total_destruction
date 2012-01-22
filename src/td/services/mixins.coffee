@@ -4,4 +4,8 @@ Mixins =
       object[name] = method
 
   include: (object, mixin) ->
-    extend object.prototype, mixin
+    @extend(object.prototype, mixin)
+
+@Td ||= {}
+@Td.Services ||= {}
+@Td.Services.Mixins = Mixins

@@ -4,8 +4,7 @@ class Player
     @y    = 0
     @z    = 0
     @name = ''
-    @id   = Td.Services.IdGenerator.generate()
-
+    @id   = Td.Services.String.generateId()
 
 @Td ||= {}
 @Td.Game ||= {}

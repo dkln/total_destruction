@@ -1,15 +1,8 @@
 class Sprite extends Td.Gfx.Layers.Object
-  constructor: (@id, @url) ->
-    @loaded = false
-    @image  = null
-
-  load: (onComplete) ->
-    @image        = new Image()
-    @image.onload = onComplete
-    @image.src    = @url
+  constructor: (@sprite) ->
 
   render: (ctx) ->
-    ctx.drawImage(@image, 0, 0)
+    @sprite.render(ctx, 0, 0)
 
 @Td ||= {}
 @Td.Gfx ||= {}

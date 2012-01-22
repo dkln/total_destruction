@@ -1,4 +1,4 @@
-SpriteLoader =
+Loader =
   stack: {}
 
   loadStack: []
@@ -17,18 +17,19 @@ SpriteLoader =
 
   basePath: ''
 
-  addStack: (stack) ->
+  addStack: (stack, type) ->
     for id, url of stack
-      @add(id, url)
+      @add(id, url, type)
 
-  add: (id, url) ->
+  add: (id, url, type) ->
     @numToLoad++
     @remove(id) if @stack[id]
-    @loadStack.push(new Td.Gfx.Sprite(id, "#{@basePath}#{url}"))
+    @loadStack.push(new Td.Services.Loader[Td.Services.String.titleize(type)](id, url))
 
   remove: (id) ->
 
   get: (id) ->
+    console.log("Unknown item #{id} requested") unless @stack[id]
     @stack[id]
 
   getProgress: ->
@@ -40,7 +41,7 @@ SpriteLoader =
 
     @loadNext() unless @loading
 
-  handleLoadComplete: (event) =>
+  handleLoadComplete: (event) ->
     @placeLoadedIntoStack()
     @popLoadStack()
     @callStatusUpdateHandlers()
@@ -78,8 +79,7 @@ SpriteLoader =
     @loaded++
 
   placeLoadedIntoStack: ->
-    @toLoad.loaded = true
-    @stack[@toLoad.id] = @toLoad
+    @stack[@toLoad.id] = @toLoad.get()
 
   popLoadStack: ->
     @toLoad = null
@@ -90,8 +90,8 @@ SpriteLoader =
 
   loadNextInStack: ->
     @toLoad = @loadStack[0]
-    @toLoad.load()
+    @toLoad.load((event) => @handleLoadComplete(event))
 
 @Td ||= {}
 @Td.Services ||= {}
-@Td.Services.SpriteLoader = SpriteLoader
+@Td.Services.Loader = Loader
