@@ -2,16 +2,18 @@ class Viewport
   constructor: ->
     @x      = 0
     @y      = 0
-    @width  = 0
-    @height = 0
+    @width  = 50
+    @height = 50
 
   boundX: (world) ->
-    boundX = x + @width
+    boundX = @x + @width
     boundX = world.width if boundX > world.width
+    boundX
 
   boundY: (world) ->
-    boundY = y + @height
-    boundY = world.height if boundX > world.height
+    boundY = @y + @height
+    boundY = world.height if boundY > world.height
+    boundY
 
 
 @Td ||= {}

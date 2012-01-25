@@ -4,7 +4,7 @@ class Base
     @height = 0
     @tiles  = []
 
-  set: (sprite, x, y) ->
+  set: (x, y, sprite) ->
     @tiles[y] ||= []
     @tiles[y][x] = sprite
 

@@ -28,10 +28,9 @@ DisplayObjects =
 
   renderAllChildren: (ctx) ->
     for child in @allChildren
-      Td.Gfx.Layers.Translate.setCanvasPositions(child)
-      @renderChild(ctx) if child.calculatedVisibility
+      @renderChild(ctx, child) if child.visible
 
-  renderChild: (ctx) ->
+  renderChild: (ctx, child) ->
     ctx.save()
     @setupContext(ctx, child)
     child.render(ctx)
@@ -50,8 +49,6 @@ DisplayObjects =
 
   hasChildren: (object) ->
     object.children? && object.children.length > 0
-
-  positionChanged: -> false
 
 Td.Services.Mixins.extend(DisplayObjects, Td.Gfx.Layers.ContainerBase)
 

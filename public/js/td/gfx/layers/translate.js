@@ -3,34 +3,15 @@
 
   Translate = {
     setCanvasPositions: function(layer) {
-      var newVars;
       if (layer.positionChanged()) {
         layer.oldX = layer.x;
         layer.oldY = layer.y;
         layer.oldVisible = layer.visible;
         layer.oldAlpha = layer.alpha;
-        newVars = this.getCanvasPositions(layer);
-        layer.calculatedX = newVars[0];
-        layer.calculatedY = newVars[1];
-        layer.calculatedVisibility = newVars[2];
-        return layer.calculatedAlpha = newVars[3];
+        layer.oldScaleX = layer.scaleX;
+        layer.oldScaleY = layer.scaleY;
+        return layer.oldRotation = layer.rotation;
       }
-    },
-    getCanvasPositions: function(layer) {
-      var theParent, translatedAlpha, translatedVisibility, translatedX, translatedY;
-      theParent = layer;
-      translatedX = 0;
-      translatedY = 0;
-      translatedVisibility = true;
-      translatedAlpha = 1;
-      while (theParent) {
-        if (!theParent.visible) translatedVisibility = false;
-        translatedX += theParent.x;
-        translatedY += theParent.y;
-        translatedAlpha *= theParent.alpha;
-        theParent = theParent.parent;
-      }
-      return [translatedX, translatedY, translatedVisibility, translatedAlpha];
     },
     ancestorsPositionChanged: function(layer) {
       var ancestor, _i, _len, _ref;

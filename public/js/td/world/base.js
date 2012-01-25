@@ -9,7 +9,7 @@
       this.tiles = [];
     }
 
-    Base.prototype.set = function(sprite, x, y) {
+    Base.prototype.set = function(x, y, sprite) {
       var _base;
       (_base = this.tiles)[y] || (_base[y] = []);
       this.tiles[y][x] = sprite;

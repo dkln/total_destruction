@@ -38,16 +38,15 @@
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         child = _ref[_i];
-        Td.Gfx.Layers.Translate.setCanvasPositions(child);
-        if (child.calculatedVisibility) {
-          _results.push(this.renderChild(ctx));
+        if (child.visible) {
+          _results.push(this.renderChild(ctx, child));
         } else {
           _results.push(void 0);
         }
       }
       return _results;
     },
-    renderChild: function(ctx) {
+    renderChild: function(ctx, child) {
       ctx.save();
       this.setupContext(ctx, child);
       child.render(ctx);
@@ -69,9 +68,6 @@
     },
     hasChildren: function(object) {
       return (object.children != null) && object.children.length > 0;
-    },
-    positionChanged: function() {
-      return false;
     }
   };
 

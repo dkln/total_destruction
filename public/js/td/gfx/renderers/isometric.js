@@ -12,7 +12,7 @@
           var _results2;
           _results2 = [];
           for (worldX = fromX; fromX <= toX ? worldX <= toX : worldX >= toX; fromX <= toX ? worldX++ : worldX--) {
-            _results2.push(Td.Gfx.Renderers.IsometricTile.draw(ctx, world, viewport, worldX, worldY));
+            _results2.push(Td.Gfx.Renderers.IsometricTile.render(ctx, world, viewport, worldX, worldY));
           }
           return _results2;
         })());

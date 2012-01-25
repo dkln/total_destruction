@@ -10,10 +10,11 @@
     function IsometricMap(world, viewport) {
       this.world = world;
       this.viewport = viewport;
+      IsometricMap.__super__.constructor.call(this);
     }
 
     IsometricMap.prototype.render = function(ctx) {
-      return Td.Gfx.Renderers.Isometric(ctx, this.world, this.viewport);
+      return Td.Gfx.Renderers.Isometric.render(ctx, this.world, this.viewport);
     };
 
     return IsometricMap;

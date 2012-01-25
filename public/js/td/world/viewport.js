@@ -6,20 +6,22 @@
     function Viewport() {
       this.x = 0;
       this.y = 0;
-      this.width = 0;
-      this.height = 0;
+      this.width = 50;
+      this.height = 50;
     }
 
     Viewport.prototype.boundX = function(world) {
       var boundX;
-      boundX = x + this.width;
-      if (boundX > world.width) return boundX = world.width;
+      boundX = this.x + this.width;
+      if (boundX > world.width) boundX = world.width;
+      return boundX;
     };
 
     Viewport.prototype.boundY = function(world) {
       var boundY;
-      boundY = y + this.height;
-      if (boundX > world.height) return boundY = world.height;
+      boundY = this.y + this.height;
+      if (boundY > world.height) boundY = world.height;
+      return boundY;
     };
 
     return Viewport;
