@@ -6,8 +6,8 @@
     function Viewport() {
       this.x = 0;
       this.y = 0;
-      this.width = 50;
-      this.height = 50;
+      this.width = 15;
+      this.height = 15;
     }
 
     Viewport.prototype.boundX = function(world) {

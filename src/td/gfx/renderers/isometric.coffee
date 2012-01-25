@@ -4,7 +4,7 @@ Isometric =
     toX   = viewport.boundX(world)
 
     for worldY in [viewport.y..viewport.boundY(world)]
-      for worldX in [fromX..toX]
+      for worldX in [toX..fromX]
         Td.Gfx.Renderers.IsometricTile.render(ctx, world, viewport, worldX, worldY)
 
 

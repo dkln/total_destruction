@@ -2,8 +2,8 @@ class Viewport
   constructor: ->
     @x      = 0
     @y      = 0
-    @width  = 50
-    @height = 50
+    @width  = 15
+    @height = 15
 
   boundX: (world) ->
     boundX = @x + @width

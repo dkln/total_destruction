@@ -11,6 +11,8 @@
       this.world = world;
       this.viewport = viewport;
       IsometricMap.__super__.constructor.call(this);
+      this.scaleX = 1;
+      this.scaleY = 1;
     }
 
     IsometricMap.prototype.render = function(ctx) {

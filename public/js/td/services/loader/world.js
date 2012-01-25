@@ -17,6 +17,7 @@
       this.onComplete = onComplete;
       this.request.onreadystatechange = this.handleStateChange;
       this.request.open('GET', this.url, true);
+      this.request.setRequestHeader('Pragma', 'Cache-Control: no-cache');
       return this.request.send(null);
     };
 

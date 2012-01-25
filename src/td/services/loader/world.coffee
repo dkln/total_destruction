@@ -8,6 +8,7 @@ class World
     @onComplete = onComplete
     @request.onreadystatechange = @handleStateChange
     @request.open('GET', @url, true)
+    @request.setRequestHeader('Pragma', 'Cache-Control: no-cache')
     @request.send(null)
 
   handleStateChange: (event) =>

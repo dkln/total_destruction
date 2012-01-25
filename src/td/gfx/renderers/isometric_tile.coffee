@@ -15,11 +15,11 @@ IsometricTile =
 
   getScreenX: (world, viewport, worldX, worldY, tile) ->
     x = @getScreenOffsetX(worldY, viewport) + @getWorldOffsetX(worldX, viewport) * @width
-    Math.round(@getCenterX(x, tile))
+    @getCenterX(x, tile)
 
   getScreenY: (world, viewport, worldX, worldY, tile) ->
     y = @getWorldOffsetY(worldY, viewport) * @height / 2
-    Math.round(@getCenterY(y, tile))
+    @getCenterY(y, tile)
 
   getCenterX: (x, tile) ->
     x + (@width / 2 - tile.width / 2)

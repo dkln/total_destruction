@@ -11,7 +11,7 @@
         _results.push((function() {
           var _results2;
           _results2 = [];
-          for (worldX = fromX; fromX <= toX ? worldX <= toX : worldX >= toX; fromX <= toX ? worldX++ : worldX--) {
+          for (worldX = toX; toX <= fromX ? worldX <= fromX : worldX >= fromX; toX <= fromX ? worldX++ : worldX--) {
             _results2.push(Td.Gfx.Renderers.IsometricTile.render(ctx, world, viewport, worldX, worldY));
           }
           return _results2;
