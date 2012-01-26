@@ -18,7 +18,7 @@ IsometricTile =
     @getCenterX(x, tile)
 
   getScreenY: (world, viewport, worldX, worldY, tile) ->
-    y = @getWorldOffsetY(worldY, viewport) * @height / 2
+    y = @getScreenOffsetY(worldX, viewport) + @getWorldOffsetY(worldY, viewport) * parseInt(@height / 2)
     @getCenterY(y, tile)
 
   getCenterX: (x, tile) ->
@@ -38,6 +38,9 @@ IsometricTile =
       @width / 2
     else
       0
+
+  getScreenOffsetY: (worldX, viewport) ->
+    0
 
 @Td ||= {}
 @Td.Gfx ||= {}

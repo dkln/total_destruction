@@ -22,7 +22,7 @@
     },
     getScreenY: function(world, viewport, worldX, worldY, tile) {
       var y;
-      y = this.getWorldOffsetY(worldY, viewport) * this.height / 2;
+      y = this.getScreenOffsetY(worldX, viewport) + this.getWorldOffsetY(worldY, viewport) * parseInt(this.height / 2);
       return this.getCenterY(y, tile);
     },
     getCenterX: function(x, tile) {
@@ -43,6 +43,9 @@
       } else {
         return 0;
       }
+    },
+    getScreenOffsetY: function(worldX, viewport) {
+      return 0;
     }
   };
 
