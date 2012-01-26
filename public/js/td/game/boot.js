@@ -5,9 +5,10 @@
     canvasWidth: 640,
     canvasHeight: 480,
     tiles: {
-      pavement: 'img/tiles/pavement.png',
       grass: 'img/tiles/grass.png',
-      speedway: 'img/tiles/speedway.png'
+      speedway: 'img/tiles/speedway.png',
+      speedway2: 'img/tiles/speedway2.png',
+      building: 'img/tiles/building.png'
     },
     maps: {
       world: 'maps/test.map'

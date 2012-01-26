@@ -1,8 +1,9 @@
 SpriteMapping = [
   null,
   'grass',
-  'pavement',
-  'speed_way'
+  'speedway',
+  'speedway2',
+  'building'
 ]
 
 @Td ||= {}
