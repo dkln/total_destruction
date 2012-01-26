@@ -5,13 +5,25 @@ class Viewport
     @width  = 15
     @height = 15
 
+  getX: ->
+    parseInt(@x)
+
+  getY: ->
+    parseInt(@y)
+
+  getOffsetFactorX: ->
+    @x - parseInt(@x)
+
+  getOffsetFactorY: ->
+    @y - parseInt(@y)
+
   boundX: (world) ->
-    boundX = @x + @width
+    boundX = @getX() + @width
     boundX = world.width if boundX > world.width
     boundX
 
   boundY: (world) ->
-    boundY = @y + @height
+    boundY = @getY() + @height
     boundY = world.height if boundY > world.height
     boundY
 

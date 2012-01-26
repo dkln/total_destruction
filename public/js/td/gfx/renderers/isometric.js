@@ -3,15 +3,13 @@
 
   Isometric = {
     render: function(ctx, world, viewport) {
-      var fromX, toX, worldX, worldY, _ref, _ref2, _results;
-      fromX = viewport.x;
-      toX = viewport.boundX(world);
+      var worldX, worldY, _ref, _results;
       _results = [];
-      for (worldY = _ref = viewport.y, _ref2 = viewport.boundY(world); _ref <= _ref2 ? worldY <= _ref2 : worldY >= _ref2; _ref <= _ref2 ? worldY++ : worldY--) {
+      for (worldY = 0, _ref = world.height; 0 <= _ref ? worldY <= _ref : worldY >= _ref; 0 <= _ref ? worldY++ : worldY--) {
         _results.push((function() {
-          var _results2;
+          var _ref2, _results2;
           _results2 = [];
-          for (worldX = toX; toX <= fromX ? worldX <= fromX : worldX >= fromX; toX <= fromX ? worldX++ : worldX--) {
+          for (worldX = _ref2 = world.width; _ref2 <= 0 ? worldX <= 0 : worldX >= 0; _ref2 <= 0 ? worldX++ : worldX--) {
             _results2.push(Td.Gfx.Renderers.IsometricTile.render(ctx, world, viewport, worldX, worldY));
           }
           return _results2;

@@ -10,16 +10,32 @@
       this.height = 15;
     }
 
+    Viewport.prototype.getX = function() {
+      return parseInt(this.x);
+    };
+
+    Viewport.prototype.getY = function() {
+      return parseInt(this.y);
+    };
+
+    Viewport.prototype.getOffsetFactorX = function() {
+      return this.x - parseInt(this.x);
+    };
+
+    Viewport.prototype.getOffsetFactorY = function() {
+      return this.y - parseInt(this.y);
+    };
+
     Viewport.prototype.boundX = function(world) {
       var boundX;
-      boundX = this.x + this.width;
+      boundX = this.getX() + this.width;
       if (boundX > world.width) boundX = world.width;
       return boundX;
     };
 
     Viewport.prototype.boundY = function(world) {
       var boundY;
-      boundY = this.y + this.height;
+      boundY = this.getY() + this.height;
       if (boundY > world.height) boundY = world.height;
       return boundY;
     };

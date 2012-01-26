@@ -8,39 +8,32 @@ IsometricTile =
       x = @getScreenX(world, viewport, worldX, worldY, world.tiles[worldY][worldX])
       y = @getScreenY(world, viewport, worldX, worldY, world.tiles[worldY][worldX])
 
-      @renderOnScreen(ctx, x, y, world.tiles[worldY][worldX])
+      @renderOnScreen(ctx, x, y, world.tiles[worldY][worldX]) unless @isOffscreen(ctx, x, y)
 
   renderOnScreen: (ctx, screenX, screenY, sprite) ->
     sprite.render(ctx, screenX, screenY)
 
   getScreenX: (world, viewport, worldX, worldY, tile) ->
-    x = @getScreenOffsetX(worldY, viewport) + @getWorldOffsetX(worldX, viewport) * @width
-    @getCenterX(x, tile)
+    ((worldX * parseInt(@width / 2)) + (worldY * parseInt(@width / 2)) - @getScreenOffsetX(viewport))
 
   getScreenY: (world, viewport, worldX, worldY, tile) ->
-    y = @getScreenOffsetY(worldX, viewport) + @getWorldOffsetY(worldY, viewport) * parseInt(@height / 2)
-    @getCenterY(y, tile)
+    ((worldY * parseInt(@height / 2)) - (worldX * parseInt(@height / 2)) - @getScreenOffsetY(viewport))
 
-  getCenterX: (x, tile) ->
-    x + (@width / 2 - tile.width / 2)
+  getScreenOffsetX: (viewport) ->
+    Math.round(viewport.x * @width)
 
-  getCenterY: (y, tile) ->
-    y + (@height / 2 - tile.height / 2)
+  getScreenOffsetY: (viewport) ->
+    Math.round(viewport.y * @height)
 
-  getWorldOffsetX: (x, viewport) ->
-    x - viewport.x
+  getScreenWidth: (viewport) ->
+    viewport.width * @width
 
-  getWorldOffsetY: (y, viewport) ->
-    y - viewport.y
+  getScreenHeight: (viewport) ->
+    viewport.height * @height
 
-  getScreenOffsetX: (worldY, viewport) ->
-    if @getWorldOffsetY(worldY, viewport) % 2 == 0
-      @width / 2
-    else
-      0
+  isOffscreen: (ctx, x, y) ->
+    x < -@width || y < -@height || x > ctx.canvas.width || y > ctx.canvas.height
 
-  getScreenOffsetY: (worldX, viewport) ->
-    0
 
 @Td ||= {}
 @Td.Gfx ||= {}

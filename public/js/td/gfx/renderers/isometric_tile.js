@@ -9,43 +9,34 @@
       if (world.tiles[worldY][worldX]) {
         x = this.getScreenX(world, viewport, worldX, worldY, world.tiles[worldY][worldX]);
         y = this.getScreenY(world, viewport, worldX, worldY, world.tiles[worldY][worldX]);
-        return this.renderOnScreen(ctx, x, y, world.tiles[worldY][worldX]);
+        if (!this.isOffscreen(ctx, x, y)) {
+          return this.renderOnScreen(ctx, x, y, world.tiles[worldY][worldX]);
+        }
       }
     },
     renderOnScreen: function(ctx, screenX, screenY, sprite) {
       return sprite.render(ctx, screenX, screenY);
     },
     getScreenX: function(world, viewport, worldX, worldY, tile) {
-      var x;
-      x = this.getScreenOffsetX(worldY, viewport) + this.getWorldOffsetX(worldX, viewport) * this.width;
-      return this.getCenterX(x, tile);
+      return (worldX * parseInt(this.width / 2)) + (worldY * parseInt(this.width / 2)) - this.getScreenOffsetX(viewport);
     },
     getScreenY: function(world, viewport, worldX, worldY, tile) {
-      var y;
-      y = this.getScreenOffsetY(worldX, viewport) + this.getWorldOffsetY(worldY, viewport) * parseInt(this.height / 2);
-      return this.getCenterY(y, tile);
+      return (worldY * parseInt(this.height / 2)) - (worldX * parseInt(this.height / 2)) - this.getScreenOffsetY(viewport);
     },
-    getCenterX: function(x, tile) {
-      return x + (this.width / 2 - tile.width / 2);
+    getScreenOffsetX: function(viewport) {
+      return Math.round(viewport.x * this.width);
     },
-    getCenterY: function(y, tile) {
-      return y + (this.height / 2 - tile.height / 2);
+    getScreenOffsetY: function(viewport) {
+      return Math.round(viewport.y * this.height);
     },
-    getWorldOffsetX: function(x, viewport) {
-      return x - viewport.x;
+    getScreenWidth: function(viewport) {
+      return viewport.width * this.width;
     },
-    getWorldOffsetY: function(y, viewport) {
-      return y - viewport.y;
+    getScreenHeight: function(viewport) {
+      return viewport.height * this.height;
     },
-    getScreenOffsetX: function(worldY, viewport) {
-      if (this.getWorldOffsetY(worldY, viewport) % 2 === 0) {
-        return this.width / 2;
-      } else {
-        return 0;
-      }
-    },
-    getScreenOffsetY: function(worldX, viewport) {
-      return 0;
+    isOffscreen: function(ctx, x, y) {
+      return x < -this.width || y < -this.height || x > ctx.canvas.width || y > ctx.canvas.height;
     }
   };
 
