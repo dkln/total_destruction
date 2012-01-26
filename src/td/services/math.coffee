@@ -1,5 +1,6 @@
 Math =
-  angleToRadians: (angle) -> angle * Math.PI / 180
+  angleToRadians: (angle) ->
+    angle * Math.PI / 180
 
 @Td ||= {}
 @Td.Services ||= {}
