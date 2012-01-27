@@ -1,4 +1,4 @@
-IsometricTile =
+DiamondTile =
   width: 50
 
   height: 25
@@ -38,4 +38,5 @@ IsometricTile =
 @Td ||= {}
 @Td.Gfx ||= {}
 @Td.Gfx.Renderers ||= {}
-@Td.Gfx.Renderers.IsometricTile = IsometricTile
+@Td.Gfx.Renderers.Isometric ||= {}
+@Td.Gfx.Renderers.Isometric.DiamondTile = DiamondTile

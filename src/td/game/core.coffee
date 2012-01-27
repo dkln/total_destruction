@@ -27,7 +27,7 @@ Core =
   initWorld: ->
     @viewport   = new Td.World.Viewport(@tileWidth, @tileHeight)
     @world      = Td.Services.Loader.get('world')
-    @worldLayer = new Td.Gfx.Layers.IsometricMap(@world, @viewport)
+    @worldLayer = new Td.Gfx.Layers.IsometricMap(@world, @viewport, Td.Gfx.Renderers.Isometric.Diamond)
 
     Td.Gfx.Renderers.DisplayObjects.add(@worldLayer)
 

@@ -20,7 +20,7 @@
     initWorld: function() {
       this.viewport = new Td.World.Viewport(this.tileWidth, this.tileHeight);
       this.world = Td.Services.Loader.get('world');
-      this.worldLayer = new Td.Gfx.Layers.IsometricMap(this.world, this.viewport);
+      this.worldLayer = new Td.Gfx.Layers.IsometricMap(this.world, this.viewport, Td.Gfx.Renderers.Isometric.Diamond);
       return Td.Gfx.Renderers.DisplayObjects.add(this.worldLayer);
     },
     initCanvas: function() {

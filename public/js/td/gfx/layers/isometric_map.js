@@ -7,9 +7,10 @@
 
     __extends(IsometricMap, _super);
 
-    function IsometricMap(world, viewport) {
+    function IsometricMap(world, viewport, renderer) {
       this.world = world;
       this.viewport = viewport;
+      this.renderer = renderer;
       IsometricMap.__super__.constructor.call(this);
       this.scaleX = 1;
       this.scaleY = 1;
@@ -17,7 +18,7 @@
     }
 
     IsometricMap.prototype.render = function(ctx) {
-      return Td.Gfx.Renderers.Isometric.render(ctx, this.world, this.viewport);
+      return this.renderer.render(ctx, this.world, this.viewport);
     };
 
     return IsometricMap;
