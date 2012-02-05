@@ -22,22 +22,38 @@
     };
 
     Converter.prototype.setRow = function(y, rowData) {
-      var tileId, x, _i, _len, _ref, _results;
+      var cell, x, _i, _len, _ref, _results;
       x = 0;
       _ref = this.getColumns(rowData);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tileId = _ref[_i];
-        this.setColumn(x, y, tileId);
+        cell = _ref[_i];
+        this.setColumn(x, y, this.getCellData(cell));
         _results.push(x++);
       }
       return _results;
     };
 
-    Converter.prototype.setColumn = function(x, y, tileId) {
-      var spriteId;
-      spriteId = this.spriteMapping[tileId];
-      if (spriteId) return this.world.set(x, y, Td.Services.Loader.get(spriteId));
+    Converter.prototype.getCellData = function(cell) {
+      var cellData;
+      cellData = cell.split('/');
+      if (cellData.length === 2) {
+        return {
+          height: parseInt(cellData[1]),
+          tileId: cellData[0]
+        };
+      } else {
+        return {
+          height: 0,
+          tileId: cellData[0]
+        };
+      }
+    };
+
+    Converter.prototype.setColumn = function(x, y, cellData) {
+      var sprite;
+      sprite = Td.Services.Loader.get(this.spriteMapping[cellData.tileId]);
+      if (cellData.tileId) return this.world.set(x, y, cellData.height, sprite);
     };
 
     Converter.prototype.getRows = function() {

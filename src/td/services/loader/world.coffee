@@ -7,7 +7,7 @@ class World
   load: (onComplete) ->
     @onComplete = onComplete
     @request.onreadystatechange = @handleStateChange
-    @request.open('GET', @url, true)
+    @request.open('GET', "#{@url}?ts=#{@getTimestamp()}", true)
     @request.setRequestHeader('Pragma', 'Cache-Control: no-cache')
     @request.send(null)
 
@@ -26,6 +26,9 @@ class World
   get: ->
     converter = new Td.World.Converter(new Td.World.Base(), @data)
     converter.convert()
+
+  getTimestamp: ->
+    new Date().getTime()
 
 @Td ||= {}
 @Td.Services ||= {}

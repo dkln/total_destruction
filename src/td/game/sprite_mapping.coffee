@@ -3,7 +3,10 @@ SpriteMapping = [
   'grass',
   'speedway',
   'speedway2',
-  'building'
+  'speedway3',
+  'speedway4',
+  'water',
+  'pavement'
 ]
 
 @Td ||= {}

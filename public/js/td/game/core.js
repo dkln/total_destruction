@@ -38,10 +38,16 @@
       }), 1000 / this.fps, this);
     },
     handleTick: function() {
-      Td.Animation.Tween.update();
-      Td.World.InteractiveViewport.update();
-      Td.Gfx.Renderers.Clear.render(this.ctx, this.canvasWidth, this.canvasHeight);
-      return Td.Gfx.Renderers.DisplayObjects.render(this.ctx);
+      try {
+        Td.Animation.Tween.update();
+        Td.World.InteractiveViewport.update();
+        Td.Gfx.Renderers.Clear.render(this.ctx, this.canvasWidth, this.canvasHeight);
+        return Td.Gfx.Renderers.DisplayObjects.render(this.ctx);
+      } catch (error) {
+        clearInterval(this.tickTimer);
+        if (console) console.log('Error in render tick, exiting render loop');
+        throw error;
+      }
     }
   };
 

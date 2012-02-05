@@ -16,7 +16,7 @@
     World.prototype.load = function(onComplete) {
       this.onComplete = onComplete;
       this.request.onreadystatechange = this.handleStateChange;
-      this.request.open('GET', this.url, true);
+      this.request.open('GET', "" + this.url + "?ts=" + (this.getTimestamp()), true);
       this.request.setRequestHeader('Pragma', 'Cache-Control: no-cache');
       return this.request.send(null);
     };
@@ -41,6 +41,10 @@
       var converter;
       converter = new Td.World.Converter(new Td.World.Base(), this.data);
       return converter.convert();
+    };
+
+    World.prototype.getTimestamp = function() {
+      return new Date().getTime();
     };
 
     return World;

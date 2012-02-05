@@ -5,18 +5,19 @@ DiamondTile =
 
   render: (ctx, world, viewport, worldX, worldY) ->
     if world.tiles[worldY][worldX]
-      x = @getScreenX(world, viewport, worldX, worldY, world.tiles[worldY][worldX])
-      y = @getScreenY(world, viewport, worldX, worldY, world.tiles[worldY][worldX])
+      x       = @getScreenX(world, viewport, worldX, worldY)
+      y       = @getScreenY(world, viewport, worldX, worldY)
+      height  = world.tiles[worldY][worldX][0]
 
-      @renderOnScreen(ctx, x, y, world.tiles[worldY][worldX]) unless @isOffscreen(ctx, x, y)
+      @renderOnScreen(ctx, x, y, height, world.tiles[worldY][worldX][1]) unless @isOffscreen(ctx, x, y)
 
-  renderOnScreen: (ctx, screenX, screenY, sprite) ->
-    sprite.render(ctx, screenX, screenY)
+  renderOnScreen: (ctx, screenX, screenY, height, sprite) ->
+    sprite.render(ctx, screenX, screenY - height)
 
-  getScreenX: (world, viewport, worldX, worldY, tile) ->
+  getScreenX: (world, viewport, worldX, worldY) ->
     ((worldX * parseInt(@width / 2)) + (worldY * parseInt(@width / 2)) - @getScreenOffsetX(viewport))
 
-  getScreenY: (world, viewport, worldX, worldY, tile) ->
+  getScreenY: (world, viewport, worldX, worldY) ->
     ((worldY * parseInt(@height / 2)) - (worldX * parseInt(@height / 2)) - @getScreenOffsetY(viewport))
 
   getScreenOffsetX: (viewport) ->

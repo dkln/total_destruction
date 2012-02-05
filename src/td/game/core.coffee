@@ -43,10 +43,15 @@ Core =
     @tickTimer = setInterval((=> @handleTick()), 1000 / @fps, this)
 
   handleTick: ->
-    Td.Animation.Tween.update()
-    Td.World.InteractiveViewport.update()
-    Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
-    Td.Gfx.Renderers.DisplayObjects.render(@ctx)
+    try
+      Td.Animation.Tween.update()
+      Td.World.InteractiveViewport.update()
+      Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
+      Td.Gfx.Renderers.DisplayObjects.render(@ctx)
+    catch error
+      clearInterval(@tickTimer)
+      console.log('Error in render tick, exiting render loop') if console
+      throw error
 
 @Td ||= {}
 @Td.Game ||= {}

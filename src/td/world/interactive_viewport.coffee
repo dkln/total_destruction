@@ -1,5 +1,7 @@
 InteractiveViewport =
-  snap: 30
+  snapX: 30
+
+  snapY: 30
 
   canvasWidth: 0
 
@@ -14,18 +16,26 @@ InteractiveViewport =
     @canvasY      = $(ctx.canvas).offset().top
     @canvasWidth  = ctx.canvas.width
     @canvasHeight = ctx.canvas.height
+    @snapX        = @canvasWidth / 3
+    @snapY        = @canvasHeight / 3
+    @focus        = false
 
-    $('body').mousemove (event) => @handleMousemove(event)
+    $(ctx.canvas).mousemove (event) => @handleMousemove(event)
+    $(ctx.canvas).mouseout (event) => @handleMouseout(event)
 
   setViewport: (viewport) ->
     @viewport = viewport
 
   handleMousemove: (event) ->
+    @focus    = true
     @currentX = event.pageX - @canvasX
     @currentY = event.pageY - @canvasY
 
+  handleMouseout: (event) ->
+    @focus = false
+
   update: ->
-    @move() if @isInCorner()
+    @move() if @focus && @isInCorner()
 
   move: ->
     @viewport.x = @viewport.x + (@getXIncrement() * @getXSpeed())
@@ -48,27 +58,27 @@ InteractiveViewport =
       0
 
   getXSpeed: ->
-    @getXMovement() * .01
+    @getXMovement() * .0025
 
   getYSpeed: ->
-    @getYMovement() * .01
+    @getYMovement() * .0025
 
   getXMovement: ->
     if @isLeft()
-      @snap - @currentX
+      @snapX - @currentX
 
     else if @isRight()
-      @snap - (@canvasWidth - @currentX)
+      @snapX - (@canvasWidth - @currentX)
 
     else
       0
 
   getYMovement: ->
     if @isUp()
-      @snap - @currentY
+      @snapY - @currentY
 
     else if @isDown()
-      @snap - (@canvasHeight - @currentY)
+      @snapY - (@canvasHeight - @currentY)
 
     else
       0
@@ -77,16 +87,16 @@ InteractiveViewport =
     @isLeft() || @isRight() || @isUp() || @isDown()
 
   isLeft: ->
-    @currentX < @snap
+    @currentX < @snapX
 
   isRight: ->
-    @currentX > @canvasWidth - @snap
+    @currentX > @canvasWidth - @snapX
 
   isUp: ->
-    @currentY < @snap
+    @currentY < @snapY
 
   isDown: ->
-    @currentY > @canvasHeight - @snap
+    @currentY > @canvasHeight - @snapY
 
 
 @Td ||= {}

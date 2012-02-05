@@ -1,7 +1,7 @@
 (function() {
   var SpriteMapping, _base;
 
-  SpriteMapping = [null, 'grass', 'speedway', 'speedway2', 'building'];
+  SpriteMapping = [null, 'grass', 'speedway', 'speedway2', 'speedway3', 'speedway4', 'water', 'pavement'];
 
   this.Td || (this.Td = {});
 

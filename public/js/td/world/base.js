@@ -9,10 +9,10 @@
       this.tiles = [];
     }
 
-    Base.prototype.set = function(x, y, sprite) {
+    Base.prototype.set = function(x, y, height, sprite) {
       var _base;
       (_base = this.tiles)[y] || (_base[y] = []);
-      this.tiles[y][x] = sprite;
+      this.tiles[y][x] = [height, sprite];
       if (x > this.width) this.width = x;
       if (y > this.height) return this.height = y;
     };

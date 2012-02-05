@@ -8,7 +8,11 @@
       grass: 'img/tiles/grass.png',
       speedway: 'img/tiles/speedway.png',
       speedway2: 'img/tiles/speedway2.png',
-      building: 'img/tiles/building.png'
+      speedway3: 'img/tiles/speedway3.png',
+      speedway4: 'img/tiles/speedway4.png',
+      building: 'img/tiles/building.png',
+      water: 'img/tiles/water.png',
+      pavement: 'img/tiles/pavement.png'
     },
     maps: {
       world: 'maps/test.map'

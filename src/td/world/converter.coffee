@@ -14,13 +14,21 @@ class Converter
   setRow: (y, rowData) ->
     x = 0
 
-    for tileId in @getColumns(rowData)
-      @setColumn(x, y, tileId)
+    for cell in @getColumns(rowData)
+      @setColumn(x, y, @getCellData(cell))
       x++
 
-  setColumn: (x, y, tileId) ->
-    spriteId = @spriteMapping[tileId]
-    @world.set(x, y, Td.Services.Loader.get(spriteId)) if spriteId
+  getCellData: (cell) ->
+    cellData = cell.split('/')
+
+    if cellData.length == 2
+      { height: parseInt(cellData[1]), tileId: cellData[0] }
+    else
+      { height: 0, tileId: cellData[0] }
+
+  setColumn: (x, y, cellData) ->
+    sprite = Td.Services.Loader.get(@spriteMapping[cellData.tileId])
+    @world.set(x, y, cellData.height, sprite) if cellData.tileId
 
   getRows: ->
     @data.split("\n")

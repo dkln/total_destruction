@@ -2,7 +2,8 @@
   var InteractiveViewport, _base;
 
   InteractiveViewport = {
-    snap: 30,
+    snapX: 30,
+    snapY: 30,
     canvasWidth: 0,
     canvasHeight: 0,
     canvasX: 0,
@@ -13,19 +14,29 @@
       this.canvasY = $(ctx.canvas).offset().top;
       this.canvasWidth = ctx.canvas.width;
       this.canvasHeight = ctx.canvas.height;
-      return $('body').mousemove(function(event) {
+      this.snapX = this.canvasWidth / 3;
+      this.snapY = this.canvasHeight / 3;
+      this.focus = false;
+      $(ctx.canvas).mousemove(function(event) {
         return _this.handleMousemove(event);
+      });
+      return $(ctx.canvas).mouseout(function(event) {
+        return _this.handleMouseout(event);
       });
     },
     setViewport: function(viewport) {
       return this.viewport = viewport;
     },
     handleMousemove: function(event) {
+      this.focus = true;
       this.currentX = event.pageX - this.canvasX;
       return this.currentY = event.pageY - this.canvasY;
     },
+    handleMouseout: function(event) {
+      return this.focus = false;
+    },
     update: function() {
-      if (this.isInCorner()) return this.move();
+      if (this.focus && this.isInCorner()) return this.move();
     },
     move: function() {
       this.viewport.x = this.viewport.x + (this.getXIncrement() * this.getXSpeed());
@@ -50,25 +61,25 @@
       }
     },
     getXSpeed: function() {
-      return this.getXMovement() * .01;
+      return this.getXMovement() * .0025;
     },
     getYSpeed: function() {
-      return this.getYMovement() * .01;
+      return this.getYMovement() * .0025;
     },
     getXMovement: function() {
       if (this.isLeft()) {
-        return this.snap - this.currentX;
+        return this.snapX - this.currentX;
       } else if (this.isRight()) {
-        return this.snap - (this.canvasWidth - this.currentX);
+        return this.snapX - (this.canvasWidth - this.currentX);
       } else {
         return 0;
       }
     },
     getYMovement: function() {
       if (this.isUp()) {
-        return this.snap - this.currentY;
+        return this.snapY - this.currentY;
       } else if (this.isDown()) {
-        return this.snap - (this.canvasHeight - this.currentY);
+        return this.snapY - (this.canvasHeight - this.currentY);
       } else {
         return 0;
       }
@@ -77,16 +88,16 @@
       return this.isLeft() || this.isRight() || this.isUp() || this.isDown();
     },
     isLeft: function() {
-      return this.currentX < this.snap;
+      return this.currentX < this.snapX;
     },
     isRight: function() {
-      return this.currentX > this.canvasWidth - this.snap;
+      return this.currentX > this.canvasWidth - this.snapX;
     },
     isUp: function() {
-      return this.currentY < this.snap;
+      return this.currentY < this.snapY;
     },
     isDown: function() {
-      return this.currentY > this.canvasHeight - this.snap;
+      return this.currentY > this.canvasHeight - this.snapY;
     }
   };
 
