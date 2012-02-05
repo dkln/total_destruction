@@ -1,9 +1,9 @@
 class Viewport
   constructor: ->
-    @x      = 0
-    @y      = 0
-    @width  = 15
-    @height = 15
+    @x            = 0
+    @y            = 0
+    @width        = 15
+    @height       = 15
 
   getX: ->
     parseInt(@x)

@@ -22,14 +22,19 @@ Core =
   init: ->
     @initCanvas()
     @initTicker()
+    @initViewport()
     @initWorld()
 
   initWorld: ->
-    @viewport   = new Td.World.Viewport(@tileWidth, @tileHeight)
-    @world      = Td.Services.Loader.get('world')
+    @world = Td.Services.Loader.get('world')
     @worldLayer = new Td.Gfx.Layers.IsometricMap(@world, @viewport, Td.Gfx.Renderers.Isometric.Diamond)
 
     Td.Gfx.Renderers.DisplayObjects.add(@worldLayer)
+
+  initViewport: ->
+    @viewport = new Td.World.Viewport(@tileWidth, @tileHeight)
+    Td.World.InteractiveViewport.init(@ctx)
+    Td.World.InteractiveViewport.setViewport(@viewport)
 
   initCanvas: ->
     @ctx = document.getElementById('canvas').getContext('2d')
@@ -39,6 +44,7 @@ Core =
 
   handleTick: ->
     Td.Animation.Tween.update()
+    Td.World.InteractiveViewport.update()
     Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
     Td.Gfx.Renderers.DisplayObjects.render(@ctx)
 
