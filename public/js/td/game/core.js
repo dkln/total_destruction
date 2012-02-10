@@ -16,6 +16,7 @@
       this.initCanvas();
       this.initViewport();
       this.initWorld();
+      this.initUi();
       this.initTicker();
       return this.run();
     },
@@ -25,9 +26,12 @@
       return Td.Gfx.Renderers.DisplayObjects.add(this.worldLayer);
     },
     initViewport: function() {
-      this.viewport = new Td.World.Viewport(this.tileWidth, this.tileHeight);
-      Td.World.InteractiveViewport.init(this.ctx);
-      return Td.World.InteractiveViewport.setViewport(this.viewport);
+      return this.viewport = new Td.World.Viewport(this.tileWidth, this.tileHeight);
+    },
+    initUi: function() {
+      Td.Ui.Mouse.init(this.ctx);
+      Td.Ui.InteractiveViewport.init(this.ctx);
+      return Td.Ui.InteractiveViewport.viewport = this.viewport;
     },
     initCanvas: function() {
       return this.ctx = document.getElementById('canvas').getContext('2d');
@@ -48,9 +52,10 @@
           return _this.handleTick();
         });
         Td.Animation.Tween.update();
-        Td.World.InteractiveViewport.update();
+        Td.Ui.InteractiveViewport.update();
         Td.Gfx.Renderers.Clear.render(this.ctx, this.canvasWidth, this.canvasHeight);
-        return Td.Gfx.Renderers.DisplayObjects.render(this.ctx);
+        Td.Gfx.Renderers.DisplayObjects.render(this.ctx);
+        return Td.Ui.Mouse.cleanup();
       } catch (error) {
         clearInterval(this.tickTimer);
         if (console) console.log('Error in render tick, exiting render loop');

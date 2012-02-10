@@ -23,6 +23,7 @@ Core =
     @initCanvas()
     @initViewport()
     @initWorld()
+    @initUi()
     @initTicker()
     @run()
 
@@ -34,8 +35,11 @@ Core =
 
   initViewport: ->
     @viewport = new Td.World.Viewport(@tileWidth, @tileHeight)
-    Td.World.InteractiveViewport.init(@ctx)
-    Td.World.InteractiveViewport.setViewport(@viewport)
+
+  initUi: ->
+    Td.Ui.Mouse.init(@ctx)
+    Td.Ui.InteractiveViewport.init(@ctx)
+    Td.Ui.InteractiveViewport.viewport = @viewport
 
   initCanvas: ->
     @ctx = document.getElementById('canvas').getContext('2d')
@@ -51,9 +55,10 @@ Core =
       window.requestAnimFrame(=> @handleTick())
 
       Td.Animation.Tween.update()
-      Td.World.InteractiveViewport.update()
+      Td.Ui.InteractiveViewport.update()
       Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
       Td.Gfx.Renderers.DisplayObjects.render(@ctx)
+      Td.Ui.Mouse.cleanup()
 
     catch error
       clearInterval(@tickTimer)
