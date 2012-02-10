@@ -14,9 +14,10 @@
     world: null,
     init: function() {
       this.initCanvas();
-      this.initTicker();
       this.initViewport();
-      return this.initWorld();
+      this.initWorld();
+      this.initTicker();
+      return this.run();
     },
     initWorld: function() {
       this.world = Td.Services.Loader.get('world');
@@ -32,13 +33,20 @@
       return this.ctx = document.getElementById('canvas').getContext('2d');
     },
     initTicker: function() {
+      return window.requestAnimFrame = window.webkitRequestAnimationFrame || window.requestAnimationFrame;
+    },
+    run: function() {
       var _this = this;
-      return this.tickTimer = setInterval((function() {
+      return window.requestAnimFrame(function() {
         return _this.handleTick();
-      }), 1000 / this.fps, this);
+      });
     },
     handleTick: function() {
+      var _this = this;
       try {
+        window.requestAnimFrame(function() {
+          return _this.handleTick();
+        });
         Td.Animation.Tween.update();
         Td.World.InteractiveViewport.update();
         Td.Gfx.Renderers.Clear.render(this.ctx, this.canvasWidth, this.canvasHeight);

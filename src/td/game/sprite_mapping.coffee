@@ -1,11 +1,11 @@
 SpriteMapping = [
-  null,
-  'grass',
-  'speedway',
-  'speedway2',
-  'speedway3',
-  'speedway4',
-  'water',
+  null
+  'grass'
+  'speedway'
+  'speedway2'
+  'speedway3'
+  'speedway4'
+  'water'
   'pavement'
 ]
 

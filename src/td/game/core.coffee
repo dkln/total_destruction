@@ -21,9 +21,10 @@ Core =
 
   init: ->
     @initCanvas()
-    @initTicker()
     @initViewport()
     @initWorld()
+    @initTicker()
+    @run()
 
   initWorld: ->
     @world = Td.Services.Loader.get('world')
@@ -40,14 +41,20 @@ Core =
     @ctx = document.getElementById('canvas').getContext('2d')
 
   initTicker: ->
-    @tickTimer = setInterval((=> @handleTick()), 1000 / @fps, this)
+    window.requestAnimFrame = window.webkitRequestAnimationFrame || window.requestAnimationFrame
+
+  run: ->
+    window.requestAnimFrame(=> @handleTick())
 
   handleTick: ->
     try
+      window.requestAnimFrame(=> @handleTick())
+
       Td.Animation.Tween.update()
       Td.World.InteractiveViewport.update()
       Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
       Td.Gfx.Renderers.DisplayObjects.render(@ctx)
+
     catch error
       clearInterval(@tickTimer)
       console.log('Error in render tick, exiting render loop') if console
