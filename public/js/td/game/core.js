@@ -30,8 +30,8 @@
     },
     initUi: function() {
       Td.Ui.Mouse.init(this.ctx);
-      Td.Ui.InteractiveViewport.init(this.ctx);
-      return Td.Ui.InteractiveViewport.viewport = this.viewport;
+      Td.Ui.InteractiveViewport.init(this.viewport);
+      return Td.Ui.InteractiveIsometricDiamondTile.init(Td.Services.Loader.get('focus'), this.ctx, this.viewport);
     },
     initCanvas: function() {
       return this.ctx = document.getElementById('canvas').getContext('2d');
@@ -55,6 +55,8 @@
         Td.Ui.InteractiveViewport.update();
         Td.Gfx.Renderers.Clear.render(this.ctx, this.canvasWidth, this.canvasHeight);
         Td.Gfx.Renderers.DisplayObjects.render(this.ctx);
+        Td.Ui.InteractiveViewport.update();
+        Td.Ui.InteractiveIsometricDiamondTile.update();
         return Td.Ui.Mouse.cleanup();
       } catch (error) {
         clearInterval(this.tickTimer);

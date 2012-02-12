@@ -1,0 +1,5 @@
+(function() {
+  InteractiveDiamondIsometricMap;
+
+
+}).call(this);

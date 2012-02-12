@@ -5,7 +5,9 @@
     snapX: 30,
     snapY: 30,
     viewport: null,
-    init: function(ctx) {
+    mapTranslator: null,
+    init: function(viewport) {
+      this.viewport = viewport;
       this.snapX = Td.Ui.Mouse.canvasWidth / 3;
       this.snapY = Td.Ui.Mouse.canvasHeight / 3;
       return this.focus = false;

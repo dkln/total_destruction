@@ -38,8 +38,8 @@ Core =
 
   initUi: ->
     Td.Ui.Mouse.init(@ctx)
-    Td.Ui.InteractiveViewport.init(@ctx)
-    Td.Ui.InteractiveViewport.viewport = @viewport
+    Td.Ui.InteractiveViewport.init(@viewport)
+    Td.Ui.InteractiveIsometricDiamondTile.init(Td.Services.Loader.get('focus'), @ctx, @viewport)
 
   initCanvas: ->
     @ctx = document.getElementById('canvas').getContext('2d')
@@ -58,6 +58,9 @@ Core =
       Td.Ui.InteractiveViewport.update()
       Td.Gfx.Renderers.Clear.render(@ctx, @canvasWidth, @canvasHeight)
       Td.Gfx.Renderers.DisplayObjects.render(@ctx)
+      Td.Ui.InteractiveViewport.update()
+      Td.Ui.InteractiveIsometricDiamondTile.update()
+
       Td.Ui.Mouse.cleanup()
 
     catch error

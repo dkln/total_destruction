@@ -12,6 +12,7 @@ Boot =
     building:   'img/tiles/building.png'
     water:      'img/tiles/water.png'
     pavement:   'img/tiles/pavement.png'
+    focus:      'img/tiles/focus.png'
   }
 
   maps: {

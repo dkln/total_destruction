@@ -12,7 +12,8 @@
       speedway4: 'img/tiles/speedway4.png',
       building: 'img/tiles/building.png',
       water: 'img/tiles/water.png',
-      pavement: 'img/tiles/pavement.png'
+      pavement: 'img/tiles/pavement.png',
+      focus: 'img/tiles/focus.png'
     },
     maps: {
       world: 'maps/test.map'

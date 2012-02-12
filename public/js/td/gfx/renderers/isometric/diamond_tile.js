@@ -7,8 +7,8 @@
     render: function(ctx, world, viewport, worldX, worldY) {
       var height, x, y;
       if (world.tiles[worldY][worldX]) {
-        x = this.getScreenX(world, viewport, worldX, worldY);
-        y = this.getScreenY(world, viewport, worldX, worldY);
+        x = this.getScreenX(viewport, worldX, worldY);
+        y = this.getScreenY(viewport, worldX, worldY);
         height = world.tiles[worldY][worldX][0];
         if (!this.isOffscreen(ctx, x, y)) {
           return this.renderOnScreen(ctx, x, y, height, world.tiles[worldY][worldX][1]);
@@ -18,10 +18,10 @@
     renderOnScreen: function(ctx, screenX, screenY, height, sprite) {
       return sprite.render(ctx, screenX, screenY - height);
     },
-    getScreenX: function(world, viewport, worldX, worldY) {
+    getScreenX: function(viewport, worldX, worldY) {
       return (worldX * parseInt(this.width / 2)) + (worldY * parseInt(this.width / 2)) - this.getScreenOffsetX(viewport);
     },
-    getScreenY: function(world, viewport, worldX, worldY) {
+    getScreenY: function(viewport, worldX, worldY) {
       return (worldY * parseInt(this.height / 2)) - (worldX * parseInt(this.height / 2)) - this.getScreenOffsetY(viewport);
     },
     getScreenOffsetX: function(viewport) {

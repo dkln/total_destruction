@@ -5,7 +5,9 @@ InteractiveViewport =
 
   viewport: null
 
-  init: (ctx) ->
+  mapTranslator: null
+
+  init: (@viewport) ->
     @snapX        = Td.Ui.Mouse.canvasWidth / 3
     @snapY        = Td.Ui.Mouse.canvasHeight / 3
     @focus        = false
